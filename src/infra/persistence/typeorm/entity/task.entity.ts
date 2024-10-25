@@ -1,17 +1,25 @@
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-class Task {
+@Entity({ name: 'tasks' })
+class TaskEntity {
+  @PrimaryGeneratedColumn('uuid')
   public readonly id: string;
 
+  @Column({ type: 'varchar', length: 255 })
   public title: string;
 
+  @Column({ type: 'text', nullable: true })
   public description?: string | null;
 
+  @Column({ type: 'uuid', nullable: true })
   public projectId?: string | null;
 
-  public createdAt: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  public createdAt?: Date;
 
-  public updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamp' })
+  public updatedAt?: Date;
 
   constructor(
     id: string,
@@ -21,7 +29,7 @@ class Task {
     createdAt?: Date | null,
     updatedAt?: Date | null,
   ) {
-    this.id = id ?? uuidv4;
+    this.id = id ?? uuidv4();
     this.title = title;
     this.description = description ?? null;
     this.projectId = projectId ?? null;
@@ -30,4 +38,4 @@ class Task {
   }
 }
 
-export { Task }
+export { TaskEntity };
